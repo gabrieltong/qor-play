@@ -1,0 +1,6 @@
+Adapter: mysql
+Host: 127.0.0.1
+User: root
+Pass: 1qaz2wsx
+Port: 3306
+Db: rails-play

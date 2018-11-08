@@ -21,6 +21,7 @@ type Config struct {
 }
 
 var DB *gorm.DB
+var err error
 var config *Config
 
 func init() {
@@ -30,7 +31,7 @@ func init() {
 	// 	fmt.Sprintln(err)
 	// }
 	config = &Config{
-		Name: "rails-play-admin_development",
+		Name: "rails_play",
 		User: "root",
 		Pass: "1qaz2wsx",
 		Host: "127.0.0.1",
@@ -45,10 +46,11 @@ func init() {
 	// fmt.Printf("%+v\n", fullConfig)
 	fmt.Printf("config.Name is %v", config.Name)
 	fmt.Printf("%+v\n", config)
-	DB, err := gorm.Open("mysql", fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?parseTime=True&loc=Local", config.User, config.Pass, config.Host, config.Port, config.Name))
+	DB, err = gorm.Open("mysql", fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?parseTime=True&loc=Local", config.User, config.Pass, config.Host, config.Port, config.Name))
 
 	if err != nil {
 		fmt.Print(err)
 	}
+
 	DB.LogMode(true)
 }

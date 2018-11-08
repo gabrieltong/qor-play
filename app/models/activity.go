@@ -5,13 +5,13 @@ import (
 )
 
 type Activity struct {
-	*gorm.Model
-	trackable_type string `gorm:"index:trackable_type"`
-	trackable_id   int    `gorm:"index:trackable_id"`
-	owner_type     string `gorm:"index:owner_type"`
-	owner_id       int    `gorm:"index:owner_id"`
-	key            string `gorm:"index:key"`
-	parameters     string
-	recipient_type string `gorm:"index:recipient_type"`
-	recipient_id   int    `gorm:"index:recipient_id"`
+	gorm.Model
+	RrackableType  string `gorm:"index:trackable_type"`
+	TrackableId    int    `gorm:"index:trackable_id"`
+	OwnerType      string `gorm:"index:owner_type"`
+	OwnerId        int    `gorm:"index:owner_id"`
+	Key            string `gorm:"index:key"`
+	Parameters     string
+	Recipient_type string `gorm:"index:recipient_type"`
+	Recipient_id   int    `gorm:"index:recipient_id"`
 }

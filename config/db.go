@@ -2,12 +2,9 @@ package config
 
 import (
 	"fmt"
-	"io/ioutil"
-	"log"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"gopkg.in/yaml.v2"
 )
 
 type FullConfig struct {
@@ -28,21 +25,30 @@ var config *Config
 
 func init() {
 
-	yamlFile, err := ioutil.ReadFile("database.yml")
-	if err != nil {
-		fmt.Sprintln(err)
+	// yamlFile, err := ioutil.ReadFile("database.yml")
+	// if err != nil {
+	// 	fmt.Sprintln(err)
+	// }
+	config = &Config{
+		Name: "rails-play-admin_development",
+		User: "root",
+		Pass: "1qaz2wsx",
+		Host: "127.0.0.1",
+		Port: "3306",
 	}
-	config = &Config{}
 	// fmt.Sprintf(yamlFile)
-	err = yaml.Unmarshal(yamlFile, config)
-	// config := fullConfig.Development
-	if err != nil {
-		log.Fatalf("Unmarshal: %v", err)
-	}
+	// err = yaml.Unmarshal(yamlFile, config)
+	// // config := fullConfig.Development
+	// if err != nil {
+	// 	log.Fatalf("Unmarshal: %v", err)
+	// }
 	// fmt.Printf("%+v\n", fullConfig)
 	fmt.Printf("config.Name is %v", config.Name)
 	fmt.Printf("%+v\n", config)
 	DB, err := gorm.Open("mysql", fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?parseTime=True&loc=Local", config.User, config.Pass, config.Host, config.Port, config.Name))
 
+	if err != nil {
+		fmt.Print(err)
+	}
 	DB.LogMode(true)
 }

@@ -4,13 +4,12 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/gabrieltong/qor-play/app/admins"
 	"github.com/gabrieltong/qor-play/app/models"
 	"github.com/gabrieltong/qor-play/config"
-	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"github.com/qor/admin"
-	"github.com/qor/qor"
 )
 
 type Config struct {
@@ -20,19 +19,6 @@ type Config struct {
 	Port    string `yaml:"Port"`
 	Host    string `yaml:"Host"`
 	Name    string `yaml:"Name"`
-}
-
-// // Define a GORM-backend model
-// type User struct {
-// 	gorm.Model
-// 	Name string
-// }
-
-// Define another GORM-backend model
-type Product struct {
-	gorm.Model
-	Name        string
-	Description string
 }
 
 func main() {
@@ -51,29 +37,10 @@ func main() {
 
 	// Initalize
 	Admin := admin.New(&admin.AdminConfig{DB: DB})
+	App := &config.App{Admin, DB}
 
-	// Create resources from GORM-backend model
-	AdminUser := Admin.AddResource(&models.AdminUser{})
-	AdminUser.Scope(&admin.Scope{
-		Name: "IsSuper",
-		// Label: strings.Title(strings.Replace(state, "_", " ", -1)),
-		Group: "Role",
-		Handler: func(db *gorm.DB, context *qor.Context) *gorm.DB {
-			return db.Where("is_super = ?", 1)
-		},
-	})
-
-	AdminUser.Scope(&admin.Scope{
-		Name: "IsAuthor",
-		// Label: strings.Title(strings.Replace(state, "_", " ", -1)),
-		Group: "Role",
-		Handler: func(db *gorm.DB, context *qor.Context) *gorm.DB {
-			return db.Where("is_author = ?", 1)
-		},
-	})
-
+	App.Use(&admins.AdminUser{})
 	Admin.AddResource(&models.User{})
-	Admin.AddResource(&Product{})
 	Admin.AddResource(&models.Actor{})
 	Admin.AddResource(&models.Play{})
 	Admin.AddResource(&models.Title{})

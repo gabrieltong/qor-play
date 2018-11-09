@@ -10,7 +10,7 @@ import (
 	"github.com/qor/admin"
 )
 
-func main() {
+func main2() {
 
 	// activity := &models.Activity{}
 

@@ -1,6 +1,8 @@
 package config
 
 import (
+	"time"
+
 	"github.com/jinzhu/gorm"
 	"github.com/qor/admin"
 )
@@ -10,6 +12,12 @@ import (
 // 	gorm.Model
 // 	Name string
 // }
+
+type Model struct {
+	ID        uint `gorm:"primary_key"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+}
 
 // Define another GORM-backend model
 type Product struct {

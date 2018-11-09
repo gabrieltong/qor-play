@@ -6,8 +6,17 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+var PlayState []string = []string{"draft", "approving", "approved", "rejected", "published", "noticed"}
+var ClueTplType = [][]string{{"1", "菜单"}, {"2", "图片"}}
+var PlayType = [][]string{{"1", "恐怖"}, {"2", "惊悚"}, {"3", "热点"}, {"4", "本格"}, {"5", "童话"}, {"6", "宫斗"}, {"7", "搞笑"}, {"8", "武侠"}, {"9", "现代"}, {"10", "民国"}, {"11", "怀旧"}}
+var PlayLevel = [][]string{{"1", "萌新"}, {"2", "普通"}, {"3", "烧脑"}}
+var PlayRoundSize = [][]string{{"2", "2轮"}, {"3", "3轮"}, {"4", "4轮"}}
+var PlaySize = [][]string{{"1", "1"}, {"2", "2"}, {"3", "3"}, {"4", "4"}, {"5", "5"}, {"6", "6"}, {"7", "7"}}
+
 type Play struct {
 	gorm.Model
+
+	Actors            []Actor
 	Title             string
 	Writer            string
 	OnlineAt          time.Time
@@ -26,6 +35,7 @@ type Play struct {
 	Level             int
 	GamesCount        int
 	UserReservedCount int
+	RongId            string
 
 	TmIntro       int
 	TmRead        int
@@ -33,7 +43,7 @@ type Play struct {
 	TmPoll        int
 	TmTotal       int
 	TmDiscuss     int
-	TmIntroPlay   int
+	TmIntroPlayer int
 	TmIntroAll    int
 	TmDiscussPlay int
 	TmDiscussAll  int
@@ -44,7 +54,7 @@ type Play struct {
 	TmIntroPlayerLimit   int
 	TmIntroAllLimit      int
 	TmDiscussPlayerLimit int
-	TmDisscussAllLimit   int
+	TmDiscussAllLimit    int
 	TmTotalLimit         int
 	TmReadLimit          int
 	TmIntroLimit         int
@@ -91,5 +101,5 @@ type Play struct {
 	DescPre1      string `sql:"type:text"`
 	DescPre2      string `sql:"type:text"`
 
-	CluTplType int
+	ClueTplType int
 }

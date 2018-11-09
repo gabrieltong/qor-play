@@ -22,4 +22,6 @@ type Actor struct {
 	IsNpc           bool
 	PublicClueLimit int
 	Show            bool
+
+	TaskTpls []TaskTpl
 }

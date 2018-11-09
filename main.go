@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/gabrieltong/qor-play/app/admins"
-	"github.com/gabrieltong/qor-play/app/models"
 	"github.com/gabrieltong/qor-play/config"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
@@ -40,10 +39,14 @@ func main() {
 	App := &config.App{Admin, DB}
 
 	App.Use(&admins.AdminUser{})
-	Admin.AddResource(&models.User{})
-	Admin.AddResource(&models.Actor{})
-	Admin.AddResource(&models.Play{})
-	Admin.AddResource(&models.Title{})
+	App.Use(&admins.Letter{})
+	App.Use(&admins.Setting{})
+	App.Use(&admins.ModuleTop{})
+	App.Use(&admins.Actor{})
+	App.Use(&admins.User{})
+	App.Use(&admins.Play{})
+	App.Use(&admins.Game{})
+	App.Use(&admins.Title{})
 
 	// Initalize an HTTP request multiplexer
 	mux := http.NewServeMux()

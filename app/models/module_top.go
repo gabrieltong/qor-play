@@ -9,5 +9,5 @@ type ModuleTop struct {
 	Title     string
 	Link      string
 	Position  int
-	InnerLink string
+	InnerLink bool
 }

@@ -50,7 +50,9 @@ func main() {
 
 	// Initalize an HTTP request multiplexer
 	mux := http.NewServeMux()
-
+	// mount public
+	fs := http.FileServer(http.Dir("public"))
+	mux.Handle("/", fs)
 	// Mount admin to the mux
 	Admin.MountTo("/admin", mux)
 

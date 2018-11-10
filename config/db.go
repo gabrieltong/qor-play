@@ -5,6 +5,7 @@ import (
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"github.com/qor/media"
 )
 
 type FullConfig struct {
@@ -53,4 +54,5 @@ func init() {
 	}
 
 	DB.LogMode(true)
+	media.RegisterCallbacks(DB)
 }

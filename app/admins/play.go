@@ -42,23 +42,22 @@ func (play *Play) ConfigureApplication(app *config.App) {
 
 	Play.IndexAttrs([]string{"Title", "Writer", "OnlineAt", "State", "Type", "Level", "Size", "GamesOverCount"})
 
-	Play.NewAttrs(
+	Sections := make([]interface{}, 0)
+	Sections = append(Sections,
 		&admin.Section{
 			Title: "Base Information",
 			Rows: [][]string{
 				{"Title", "Writer"},
-				{"RongId", "Debug"},
+				{"RongNo", "Debug"},
 				{"OnlineAt"},
 			},
-		},
-		&admin.Section{
+		}, &admin.Section{
 			Title: "Setting",
 			Rows: [][]string{
 				{"ClueTplType", "Type", "Size"},
 				{"Level", "RoundSize"},
 			},
-		},
-		&admin.Section{
+		}, &admin.Section{
 			Title: "Time Limit",
 			Rows: [][]string{
 				{"TmRead", "TmReadLimit"},
@@ -69,6 +68,12 @@ func (play *Play) ConfigureApplication(app *config.App) {
 				{"TmPoll", "TmPollLimit"},
 			},
 		},
+		&admin.Section{
+			Title: "File",
+			Rows: [][]string{
+				{"Opening"},
+			},
+		},
 		"desc_pre_1",
 		"desc_pre_2",
 		"desc",
@@ -76,9 +81,13 @@ func (play *Play) ConfigureApplication(app *config.App) {
 		"Actors",
 	)
 
+	Play.EditAttrs(Sections...)
+	// type Sections []interface{}
+	Play.NewAttrs(Sections...)
+
 	// productPropertiesRes := product.Meta(&admin.Meta{Name: "ProductProperties"}).Resource
 	Actor := Play.Meta(&admin.Meta{Name: "Actors"}).Resource
-	Actor.NewAttrs(
+	ActorSections := []interface{}{
 		&admin.Section{
 			Rows: [][]string{
 				{"Name", "PublicClueLimit"},
@@ -91,7 +100,9 @@ func (play *Play) ConfigureApplication(app *config.App) {
 			},
 		},
 		"TaskTpls",
-	)
+	}
+	Actor.NewAttrs(ActorSections...)
+	Actor.EditAttrs(ActorSections...)
 
 	TaskTpls := Actor.Meta(&admin.Meta{Name: "TaskTpls"}).Resource
 	TaskTpls.NewAttrs("Title", "TaskTplAnswers")
@@ -102,6 +113,7 @@ func (play *Play) ConfigureApplication(app *config.App) {
 			{"Title", "IsAnswer"},
 		},
 	})
+
 	// &admin.SelectOneConfig{Collection: [][]string{{"video", "Video"}, {"image", "Image"}, {"file", "File"}, {"video_link", "Video Link"}}},
 	// Play.Meta(&admin.Meta{Name:})
 

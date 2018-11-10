@@ -1,6 +1,9 @@
 package config
 
 import (
+	"database/sql/driver"
+	"encoding/json"
+	"errors"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -37,4 +40,32 @@ type App struct {
 
 func (app *App) Use(admin AdminInterface) {
 	admin.ConfigureApplication(app)
+}
+
+type Options []Option
+
+type Option struct {
+	Key string
+	V   string
+}
+
+func (options *Options) Scan(value interface{}) error {
+	switch v := value.(type) {
+	case []byte:
+		return json.Unmarshal(v, options)
+	case string:
+		if v != "" {
+			return options.Scan([]byte(v))
+		}
+	default:
+		return errors.New("not supported")
+	}
+	return nil
+}
+
+func (options Options) Value() (driver.Value, error) {
+	if len(options) == 0 {
+		return nil, nil
+	}
+	return json.Marshal(options)
 }

@@ -1,7 +1,9 @@
 package models
 
 import (
+	"github.com/gabrieltong/qor-play/config"
 	"github.com/jinzhu/gorm"
+	"github.com/qor/media/oss"
 )
 
 type Setting struct {
@@ -16,13 +18,18 @@ type Setting struct {
 	CheckExp               int
 	HighLevel              int
 	AutoCancelOnwerOffline int
-	PlayType               string
-	PlayLevel              string
-	PlaySize               string
-	PlaySizeRange          string
+	PlayType               config.Options `sq:"type:text"`
+	PlayLevel              config.Options `sq:"type:text"`
+	PlaySize               config.Options `sq:"type:text"`
+	PlaySizeRange          config.Options `sq:"type:text"`
 	Kefu                   string
 	IosVersion             string
 	IosUrl                 string
 	AndroidVersion         string
 	AndroidUrl             string
+
+	AboutFile     oss.OSS
+	QrcodeFile    oss.OSS
+	GuideFile     oss.OSS
+	AgreementFile oss.OSS
 }

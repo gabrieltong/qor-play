@@ -4,6 +4,8 @@ import (
 	"time"
 
 	"github.com/jinzhu/gorm"
+	"github.com/qor/media"
+	"github.com/qor/media/oss"
 )
 
 var PlayState []string = []string{"draft", "approving", "approved", "rejected", "published", "noticed"}
@@ -35,20 +37,20 @@ type Play struct {
 	Level             int
 	GamesCount        int
 	UserReservedCount int
-	RongId            string
+	RongNo            string
 
-	TmIntro       int
-	TmRead        int
-	TmRound       int
-	TmPoll        int
-	TmTotal       int
-	TmDiscuss     int
-	TmIntroPlayer int
-	TmIntroAll    int
-	TmDiscussPlay int
-	TmDiscussAll  int
-	TmOver        int
-	TmPia         int
+	TmIntro         int
+	TmRead          int
+	TmRound         int
+	TmPoll          int
+	TmTotal         int
+	TmDiscuss       int
+	TmIntroPlayer   int
+	TmIntroAll      int
+	TmDiscussPlayer int
+	TmDiscussAll    int
+	TmOver          int
+	TmPia           int
 
 	TmOverLimit          int
 	TmIntroPlayerLimit   int
@@ -65,23 +67,23 @@ type Play struct {
 
 	GamesWaitingCount      int
 	GamesReadingCount      int
-	GamesPicCount          int
+	GamesPiaCount          int
 	GamesIntroductionCount int
 
-	GamesDiscuss1Count int
-	GamesDiscuss2Count int
-	GamesDiscuss3Count int
-	GamesDiscuss4Count int
+	GamesDiscuss1Count int `gorm:"column:games_discuss_1_count"`
+	GamesDiscuss2Count int `gorm:"column:games_discuss_2_count"`
+	GamesDiscuss3Count int `gorm:"column:games_discuss_3_count"`
+	GamesDiscuss4Count int `gorm:"column:games_discuss_4_count"`
 
-	GamesDiscussAll1Count int
-	GamesDiscussAll2Count int
-	GamesDiscussAll3Count int
-	GamesDiscussAll4Count int
+	GamesDiscussAll1Count int `gorm:"column:games_discuss_all_1_count"`
+	GamesDiscussAll2Count int `gorm:"column:games_discuss_all_2_count"`
+	GamesDiscussAll3Count int `gorm:"column:games_discuss_all_3_count"`
+	GamesDiscussAll4Count int `gorm:"column:games_discuss_all_4_count"`
 
-	GamesRound1Count int
-	GamesRound2Count int
-	GamesRound3Count int
-	GamesRound4Count int
+	GamesRound1Count int `gorm:"column:games_round_1_count"`
+	GamesRound2Count int `gorm:"column:games_round_2_count"`
+	GamesRound3Count int `gorm:"column:games_round_3_count"`
+	GamesRound4Count int `gorm:"column:games_round_4_count"`
 
 	GamesFinalDiscussCount int
 	GamesPollingCount      int
@@ -91,15 +93,26 @@ type Play struct {
 	Debug     bool
 	NoTimeout bool
 
-	RongNo               string
 	RequestCancelTimeout int
 	CancelNeed           int
 
 	ReservesCount int
-	PlayersCount  string
+	PlayersCount  int
 	Conclusion    string `sql:"type:text"`
-	DescPre1      string `sql:"type:text"`
-	DescPre2      string `sql:"type:text"`
+	DescPre1      string `gorm:"column:desc_pre_1" sql:"type:text"`
+	DescPre2      string `gorm:"column:desc_pre_2" sql:"type:text"`
 
 	ClueTplType int
+
+	// Opening oss.OSS
+}
+
+type Opening struct{ oss.OSS }
+
+func (Opening) GetSizes() map[string]*media.Size {
+	return map[string]*media.Size{
+		"small":  {Width: 50, Height: 50},
+		"middle": {Width: 120, Height: 120},
+		"big":    {Width: 320, Height: 320},
+	}
 }

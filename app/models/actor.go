@@ -15,10 +15,10 @@ type Actor struct {
 	ShortDesc       string `sql:"type:text"`
 	Desc            string `sql:"type:text"`
 	DefaultIntro    string
-	Point1          int
-	Point2          int
-	Point3          int
-	Point4          int
+	Point1          int `gorm:"column:point_1"`
+	Point2          int `gorm:"column:point_2"`
+	Point3          int `gorm:"column:point_3"`
+	Point4          int `gorm:"column:point_4"`
 	IsNpc           bool
 	PublicClueLimit int
 	Show            bool

@@ -9,6 +9,8 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"github.com/qor/admin"
+	"github.com/qor/auth"
+	"github.com/qor/auth/providers/password"
 )
 
 type Config struct {
@@ -56,6 +58,10 @@ func main() {
 	// Mount admin to the mux
 	Admin.MountTo("/admin", mux)
 
+	Auth := auth.New(&auth.Config{DB: DB})
+	Auth.RegisterProvider(password.New(&password.Config{}))
+
+	mux.Handle("/auth", Auth.NewServeMux())
 	fmt.Println("Listening on: 9876")
 	http.ListenAndServe(":9876", mux)
 }
